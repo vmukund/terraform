@@ -1,0 +1,35 @@
+// Get the id of the resources which you would like to import. 
+// These details can be obtained from portal through resource properties too
+
+D:\terraform>az group show --name devtest-kubernetes-rg --query id
+
+//Sample Output =>
+
+"/subscriptions/c1fded7b-1017-47e8-909c-d6f5aa5ce87c/resourceGroups/devtest-kubernetes-rg"
+
+B) Add these details of existing resource in ----main.tf----
+resource "azurerm_resource_group" "rg" {
+   location = "Central India"
+   name     = "/subscriptions/<subscription-id>/resourceGroups/devtest-kubernetes-rg"
+}
+
+#resource "azurerm_resource_group" "rg" {
+#  location = "Central India"
+#  name     = "devtest-kubernetes-rg"
+#}
+
+C) Now import the resource in current terraform state.
+
+D:\terraform>terraform import "azurerm_resource_group.rg"  "/subscriptions/<subscription-id>/resourceGroups/devtest-kubernetes-rg"
+
+D) Comment about actual resource details and replace name with imported resource name and run plan
+#resource "azurerm_resource_group" "rg" {
+#   location = "Central India"
+#   name     = "/subscriptions/<subscription-id>/resourceGroups/devtest-kubernetes-rg"
+#}
+
+resource "azurerm_resource_group" "rg" {
+  location = "Central India"
+  name     = "devtest-kubernetes-rg"
+}
+=========================================================================================================
