@@ -43,7 +43,8 @@ resource "kubernetes_deployment" "app" {
               }
               env {
                  name = "OTEL_COLLECTOR_ENDPOINT"
-                 value = "http://otel-collector.default.svc.cluster.local:4317"
+#                value = "http://otel-collector.default.svc.cluster.local:4317"
+                 value = "http://otel-collector-opentelemetry-collector.otel-ns.svc.cluster.local:4317"
                }
               resources {
                    requests = {
