@@ -36,7 +36,7 @@ resource "kubernetes_deployment" "app" {
          spec {
           container {
               name  = "java-app1"
-              image = "vmukund24/java-app-nosleep" 
+              image = "vmukund24/java-app-nosleep:latest" 
               image_pull_policy = "IfNotPresent"
               port {
                 container_port = 8080
