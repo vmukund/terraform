@@ -1,0 +1,60 @@
+mode: "deployment"
+image:
+    repository: "otel/opentelemetry-collector-contrib"
+    pullPolicy: IfNotPresent
+resources:
+    requests:
+        cpu: "100m"    # Request 100 milliCPU (0.1 CPU cores)
+        memory: "256Mi"  # Request 256 MiB of memory
+    limits:
+        cpu: "200m"    # Limit to 200 milliCPU (0.2 CPU cores)
+        memory: "512Mi"
+config: 
+    receivers:
+      otlp:
+        protocols:
+          grpc: {}
+          http: {}
+    processors: 
+          batch: {}
+    exporters:
+      logging: 
+        loglevel: debug
+      zipkin:
+           endpoint: "http://zipkin.zipkin-ns.svc:9411/api/v2/spans"
+           format: proto
+      elasticsearch/log:
+           endpoints: "https://elasticsearch-master.elastic-ns.svc:9200"
+      #    endpoints: "https://quickstart-es-default.default.svc:9200"
+           logs_index: my_logs_index
+           user: elastic
+           password: mukund@12
+           tls:
+              insecure_skip_verify: true
+      prometheus:
+           endpoint: "0.0.0.0:8889"
+           namespace: prometheus
+           const_labels:
+              label1: value1
+    service:
+      pipelines:
+        traces:
+          receivers: 
+            - otlp
+          processors: 
+            - batch
+          exporters:
+            - logging 
+            - zipkin
+        metrics:
+          receivers: 
+             - otlp
+          exporters: 
+             - logging 
+             - prometheus
+        logs:
+          receivers: 
+             - otlp
+          exporters:
+             - logging
+             - elasticsearch/log
