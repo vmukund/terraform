@@ -32,6 +32,7 @@ variable "kubectl_config_context_name" {
   description = "The config context to use when authenticating to the Kubernetes cluster. If empty, defaults to the current context specified in the kubeconfig file."
   type        = string
   default     = "DevTestK8s"
+  # Change to your AKS cluster name / "docker-desktop" 
 }
 
 variable "kubectl_config_path" {
