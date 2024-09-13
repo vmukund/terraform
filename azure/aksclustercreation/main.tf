@@ -41,4 +41,11 @@ resource "azurerm_kubernetes_cluster" "k8s" {
     network_plugin    = "kubenet"
     load_balancer_sku = "standard"
   }
+# In order to enable inbuilt AGIC Application Gateway Ingress Controller
+# Change gateway_name and subnet accordingly.
+
+  ingress_application_gateway {
+      gateway_name = "aks-cluster-ingress"
+      subnet_cidr = "10.225.0.0/16"
+    }
 }
